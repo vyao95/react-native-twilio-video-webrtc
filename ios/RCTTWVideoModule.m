@@ -323,11 +323,10 @@ RCT_EXPORT_METHOD(disconnect) {
 
 -(TVIVideoConstraints*) videoConstraints {
   return [TVIVideoConstraints constraintsWithBlock:^(TVIVideoConstraintsBuilder *builder) {
-    builder.minSize = TVIVideoConstraintsSize960x540;
-    builder.maxSize = TVIVideoConstraintsSize1280x720;
-    builder.aspectRatio = TVIAspectRatio16x9;
-    builder.minFrameRate = TVIVideoConstraintsFrameRateNone;
-    builder.maxFrameRate = TVIVideoConstraintsFrameRateNone;
+    builder.minSize = TVIVideoConstraintsSize640x480;
+    builder.maxSize = TVIVideoConstraintsSize640x480;
+    builder.minFrameRate = TVIVideoConstraintsFrameRate10;
+    builder.maxFrameRate = TVIVideoConstraintsFrameRate30;
   }];
 }
 
