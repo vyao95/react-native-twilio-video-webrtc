@@ -320,7 +320,9 @@ RCT_EXPORT_METHOD(connect:(NSString *)accessToken roomName:(NSString *)roomName)
     if (self.localAudioTrack) {
       builder.audioTracks = @[self.localAudioTrack];
     }
+      TVIVp8Codec *codec = [[TVIVp8Codec alloc] initWithSimulcast:TRUE];
     builder.roomName = roomName;
+      builder.preferredVideoCodecs = @[codec];
   }];
 
   self.room = [TwilioVideo connectWithOptions:connectOptions delegate:self];
