@@ -13,11 +13,12 @@ import android.view.ViewGroup;
 import com.twilio.video.VideoRenderer;
 import com.twilio.video.VideoScaleType;
 import com.twilio.video.VideoView;
+import com.twilio.video.VideoTextureView;
 
 import org.webrtc.RendererCommon;
 
 public class RNVideoViewGroup extends ViewGroup {
-    private VideoView surfaceViewRenderer = null;
+    private VideoTextureView surfaceViewRenderer = null;
     private int videoWidth = 0;
     private int videoHeight = 0;
     private final Object layoutSync = new Object();
@@ -27,7 +28,7 @@ public class RNVideoViewGroup extends ViewGroup {
     public RNVideoViewGroup(Context context) {
         super(context);
 
-        surfaceViewRenderer = new VideoView(context);
+        surfaceViewRenderer = new VideoTextureView(context);
         surfaceViewRenderer.setVideoScaleType(VideoScaleType.ASPECT_FILL);
         addView(surfaceViewRenderer);
         surfaceViewRenderer.setListener(
@@ -49,7 +50,7 @@ public class RNVideoViewGroup extends ViewGroup {
         );
     }
 
-    public VideoView getSurfaceViewRenderer() {
+    public VideoTextureView getSurfaceViewRenderer() {
         return surfaceViewRenderer;
     }
 
