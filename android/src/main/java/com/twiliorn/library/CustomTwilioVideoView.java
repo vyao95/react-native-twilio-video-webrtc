@@ -22,8 +22,8 @@ import android.media.AudioManager;
 import android.os.Build;
 import android.os.Handler;
 import android.os.HandlerThread;
-import android.support.annotation.NonNull;
-import android.support.annotation.StringDef;
+import androidx.annotation.NonNull;
+import androidx.annotation.StringDef;
 import android.util.Log;
 import android.view.View;
 
@@ -492,14 +492,6 @@ public class CustomTwilioVideoView extends View implements LifecycleEventListene
         if (room != null) {
             room.disconnect();
         }
-        if (localAudioTrack != null) {
-            localAudioTrack.release();
-            localAudioTrack = null;
-        }
-        if (localVideoTrack != null) {
-            localVideoTrack.release();
-            localVideoTrack = null;
-        }
         setAudioFocus(false);
         if (cameraCapturer != null) {
             cameraCapturer.stopCapture();
@@ -605,7 +597,19 @@ public class CustomTwilioVideoView extends View implements LifecycleEventListene
             }
         }
     }
-
+    
+    public void stopLocalAudio() {
+        if(localAudioTrack != null) {
+            localAudioTrack.release();
+            localAudioTrack = null;
+        }
+    }
+    public void stopLocalVideo() {
+        if (localVideoTrack != null) {
+            localVideoTrack.release();
+            localVideoTrack = null;
+        }
+    }
 
     private void convertBaseTrackStats(BaseTrackStats bs, WritableMap result) {
         result.putString("codec", bs.codec);

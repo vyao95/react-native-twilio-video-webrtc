@@ -165,8 +165,6 @@ export default class extends Component {
 
   componentWillUnmount () {
     this._unregisterEvents()
-    this._stopLocalVideo()
-    this._stopLocalAudio()
   }
 
   /**
