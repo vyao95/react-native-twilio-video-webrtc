@@ -493,10 +493,6 @@ public class CustomTwilioVideoView extends View implements LifecycleEventListene
             room.disconnect();
         }
         setAudioFocus(false);
-        if (cameraCapturer != null) {
-            cameraCapturer.stopCapture();
-            cameraCapturer = null;
-        }
     }
 
     // ===== SEND STRING ON DATA TRACK ======================================================================
@@ -608,6 +604,13 @@ public class CustomTwilioVideoView extends View implements LifecycleEventListene
         if (localVideoTrack != null) {
             localVideoTrack.release();
             localVideoTrack = null;
+        }
+    }
+
+    public void stopCameraCapturer() {
+        if (cameraCapturer != null) {
+            cameraCapturer.stopCapture();
+            cameraCapturer = null;
         }
     }
 
