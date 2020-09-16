@@ -492,6 +492,18 @@ public class CustomTwilioVideoView extends View implements LifecycleEventListene
         if (room != null) {
             room.disconnect();
         }
+        if(localAudioTrack != null) {
+            localAudioTrack.release();
+            localAudioTrack = null;
+        }
+        if (localVideoTrack != null) {
+            localVideoTrack.release();
+            localVideoTrack = null;
+        }
+        if (cameraCapturer != null) {
+            cameraCapturer.stopCapture();
+            cameraCapturer = null;
+        }
         setAudioFocus(false);
     }
 
@@ -591,26 +603,6 @@ public class CustomTwilioVideoView extends View implements LifecycleEventListene
             } else {
                 localParticipant.unpublishTrack(localAudioTrack);
             }
-        }
-    }
-    
-    public void stopLocalAudio() {
-        if(localAudioTrack != null) {
-            localAudioTrack.release();
-            localAudioTrack = null;
-        }
-    }
-    public void stopLocalVideo() {
-        if (localVideoTrack != null) {
-            localVideoTrack.release();
-            localVideoTrack = null;
-        }
-    }
-
-    public void stopCameraCapturer() {
-        if (cameraCapturer != null) {
-            cameraCapturer.stopCapture();
-            cameraCapturer = null;
         }
     }
 

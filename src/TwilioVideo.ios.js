@@ -154,6 +154,8 @@ export default class extends Component {
     this.flipCamera = this.flipCamera.bind(this)
     this.startLocalVideo = this._startLocalVideo.bind(this)
     this.startLocalAudio = this._startLocalAudio.bind(this)
+    this.stopLocalVideo = this._stopLocalVideo.bind(this)
+    this.stopLocalAudio = this._stopLocalAudio.bind(this)
     this.connect = this.connect.bind(this)
     this.disconnect = this.disconnect.bind(this)
     this.setRemoteAudioPlayback = this.setRemoteAudioPlayback.bind(this)
@@ -161,10 +163,14 @@ export default class extends Component {
 
   componentWillMount () {
     this._registerEvents()
+    this._startLocalVideo()
+    this._startLocalAudio()
   }
 
   componentWillUnmount () {
     this._unregisterEvents()
+    this._stopLocalVideo()
+    this._stopLocalAudio()
   }
 
   /**

@@ -152,8 +152,6 @@ const nativeEvents = {
   sendString: 12,
   publishVideo: 13,
   publishAudio: 14,
-  stopLocalAudio: 15,
-  stopLocalVideo: 16
 }
 
 class CustomTwilioVideoView extends Component {
@@ -212,17 +210,9 @@ class CustomTwilioVideoView extends Component {
     return Promise.resolve(enabled)
   }
 
-  stopLocalVideo() {
-    this.runCommand(nativeEvents.stopLocalVideo, [])
-  }
-
   setLocalAudioEnabled (enabled) {
     this.runCommand(nativeEvents.toggleSound, [enabled])
     return Promise.resolve(enabled)
-  }
-
-  stopLocalAudio() {
-    this.runCommand(nativeEvents.stopLocalAudio, [])
   }
 
   setRemoteAudioEnabled (enabled) {
