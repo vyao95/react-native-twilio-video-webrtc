@@ -59,11 +59,12 @@ TVIVideoFormat *RCTTWVideoModuleCameraSourceSelectVideoFormatBySize(AVCaptureDev
 }
 
 
-@interface RCTTWVideoModule () <TVIRemoteDataTrackDelegate, TVIRemoteParticipantDelegate, TVIRoomDelegate, TVICameraSourceDelegate>
+@interface RCTTWVideoModule () <TVIRemoteDataTrackDelegate, TVIRemoteParticipantDelegate, TVIRoomDelegate, TVICameraSourceDelegate, TVIAudioDevice>
 
 @property (strong, nonatomic) TVICameraSource *camera;
 @property (strong, nonatomic) TVILocalVideoTrack* localVideoTrack;
 @property (strong, nonatomic) TVILocalAudioTrack* localAudioTrack;
+@property (strong, nonatomic) TVIDefaultAudioDevice* audioDevice;
 @property (strong, nonatomic) TVILocalDataTrack* localDataTrack;
 @property (strong, nonatomic) TVILocalParticipant* localParticipant;
 @property (strong, nonatomic) TVIRoom *room;
@@ -183,7 +184,7 @@ RCT_EXPORT_METHOD(startLocalVideo) {
 }
 
 RCT_EXPORT_METHOD(startLocalAudio) {
-    self.localAudioTrack = [TVILocalAudioTrack trackWithOptions:nil enabled:YES name:@"microphone"];
+  self.localAudioTrack = [TVILocalAudioTrack trackWithOptions:nil enabled:YES name:@"microphone"];
 }
 
 RCT_EXPORT_METHOD(stopLocalVideo) {
@@ -387,10 +388,39 @@ RCT_EXPORT_METHOD(getStats) {
     }
 }
 
+RCT_EXPORT_METHOD(setupAudioSession) {
+  if(self.audioDevice == nil) {
+    self.audioDevice = [TVIDefaultAudioDevice audioDevice];
+    TwilioVideoSDK.audioDevice = self.audioDevice;
+  }
+}
+
+RCT_EXPORT_METHOD(setAudioSessionEnabled:(BOOL *) enabled) {
+  self.audioDevice.block =  ^ {
+      // We will execute `kTVIDefaultAVAudioSessionConfigurationBlock` first.
+      kTVIDefaultAVAudioSessionConfigurationBlock();
+
+      // Overwrite the audio route
+      AVAudioSession *session = [AVAudioSession sharedInstance];
+      NSError *error = nil;
+      NSLog(@"setAudioSessionEnabled");
+      if(!enabled) {
+        if (![session setCategory: AVAudioSessionCategoryAmbient error:&error]) {
+            NSLog(@"AVAudioSession setCategory:options:mode:error: %@",error);
+        }
+      } else {
+        if (![session setCategory: AVAudioSessionCategoryPlayAndRecord error:&error]) {
+          NSLog(@"AVAudioSession setCategory:options:mode:error: %@",error);
+        }
+      }
+
+  };
+  self.audioDevice.block();
+}
+
 RCT_EXPORT_METHOD(connect:(NSString *)accessToken roomName:(NSString *)roomName enableVideo:(BOOL *)enableVideo encodingParameters:(NSDictionary *)encodingParameters) {
-
   [self enableLocalVideoAtCreationTime: enableVideo];
-
+  
   TVIConnectOptions *connectOptions = [TVIConnectOptions optionsWithToken:accessToken block:^(TVIConnectOptionsBuilder * _Nonnull builder) {
     if (self.localVideoTrack) {
       builder.videoTracks = @[self.localVideoTrack];
@@ -579,9 +609,5 @@ RCT_EXPORT_METHOD(disconnect) {
     // TODO: Handle didReceiveData
     NSLog(@"DataTrack didReceiveData");
 }
-
-
-
-// TODO: Local participant delegates
 
 @end

@@ -156,6 +156,7 @@ export default class extends Component {
     this.startLocalAudio = this._startLocalAudio.bind(this)
     this.stopLocalVideo = this._stopLocalVideo.bind(this)
     this.stopLocalAudio = this._stopLocalAudio.bind(this)
+    this.setAudioSessionEnabled = this._setAudioSessionEnabled.bind(this)
     this.connect = this.connect.bind(this)
     this.disconnect = this.disconnect.bind(this)
     this.setRemoteAudioPlayback = this.setRemoteAudioPlayback.bind(this)
@@ -163,7 +164,7 @@ export default class extends Component {
 
   componentWillMount () {
     this._registerEvents()
-    this._startLocalVideo()
+    this._setupAudioSession()
     this._startLocalAudio()
   }
 
@@ -290,6 +291,14 @@ export default class extends Component {
 
   _stopLocalAudio () {
     TWVideoModule.stopLocalAudio()
+  }
+
+  _setupAudioSession() {
+    TWVideoModule.setupAudioSession()
+  }
+
+  _setAudioSessionEnabled(enabled) {
+    TWVideoModule.setAudioSessionEnabled(enabled)
   }
 
   _unregisterEvents () {
