@@ -218,7 +218,11 @@ RCT_EXPORT_METHOD(unpublishLocalAudio) {
 
 RCT_REMAP_METHOD(setLocalAudioEnabled, enabled:(BOOL)enabled setLocalAudioEnabledWithResolver:(RCTPromiseResolveBlock)resolve
     rejecter:(RCTPromiseRejectBlock)reject) {
-  [self.localAudioTrack setEnabled:enabled];
+  if(self.localAudioTrack != nil) {
+    [self.localAudioTrack setEnabled:enabled];
+  } else {
+    [self startLocalAudio];
+  }
 
   resolve(@(enabled));
 }
@@ -462,6 +466,8 @@ RCT_EXPORT_METHOD(sendString:(nonnull NSString *)message) {
 
 RCT_EXPORT_METHOD(disconnect) {
   [self.room disconnect];
+  [self stopLocalVideo];
+  [self stopLocalAudio];
 }
 
 # pragma mark - Common
