@@ -364,10 +364,8 @@ public class CustomTwilioVideoView extends View implements LifecycleEventListene
 
     public void releaseResource() {
         themedReactContext.removeLifecycleEventListener(this);
+        disconnect();
         room = null;
-        localVideoTrack = null;
-        thumbnailVideoView = null;
-        cameraCapturer = null;
     }
 
     // ====== CONNECTING ===========================================================================
@@ -505,6 +503,10 @@ public class CustomTwilioVideoView extends View implements LifecycleEventListene
             cameraCapturer = null;
         }
         setAudioFocus(false);
+
+        WritableMap event = new WritableNativeMap();
+        event.putBoolean("resourcesReleased", true);
+        pushEvent(CustomTwilioVideoView.this, ON_DISCONNECTED, event);
     }
 
     // ===== SEND STRING ON DATA TRACK ======================================================================
